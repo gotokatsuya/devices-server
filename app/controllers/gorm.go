@@ -1,12 +1,32 @@
 package controllers
 
 import (
+	"bytes"
 	"database/sql"
 	"devices-server/app/models"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	r "github.com/revel/revel"
 )
+
+func ensureOption(option string) string {
+	value, found := r.Config.String(option)
+	if !found {
+		r.ERROR.Fatalf("Option %v not found", option)
+	}
+	return value
+}
+
+func driversourcesForMysql(username string, password string, name string) string {
+	var drivesources bytes.Buffer
+	drivesources.WriteString(username)
+	drivesources.WriteString(":")
+	drivesources.WriteString(password)
+	drivesources.WriteString("@")
+	drivesources.WriteString("/")
+	drivesources.WriteString(name)
+	return drivesources.String()
+}
 
 // type: revel controller with `gorm.DB`
 // c.Txn will keep `db gorm.DB`
@@ -21,20 +41,17 @@ var Gdb gorm.DB
 // init db
 func InitDB() {
 	var err error
+
+	driver := ensureOption("db.driver")
+	username := ensureOption("db.username")
+	password := ensureOption("db.password")
+	name := ensureOption("db.name")
+
+	// 今はmysql前提で書いている
+	drivesources := driversourcesForMysql(username, password, name)
+
 	// open db
-	var db_user = revel.Config.String("db.user")
-	var db_password = revel.Config.String("db.pasword")
-	var db_name = revel.Config.String("db.name")
-
-	var drivesources bytes.Buffer
-	drivesources.WriteString(db_user)
-	drivesources.WriteString(":")
-	drivesources.WriteString(db_password)
-	drivesources.WriteString("@")
-	drivesources.WriteString("/")
-	drivesources.WriteString(db_name)
-
-	Gdb, err = gorm.Open("mysql", drivesources.toString())
+	Gdb, err = gorm.Open(driver, drivesources)
 	if err != nil {
 		r.ERROR.Println("FATAL", err)
 		panic(err)
