@@ -1,13 +1,14 @@
 package models
 
-import "time" // if you need/want
+import "time"
 
-type User struct { // example user fields
-	Id                 int64
-	Name               string
-	EcncryptedPassword []byte
-	Password           string `sql:"-"`
-	CreatedAt          time.Time
-	UpdatedAt          time.Time
-	DeletedAt          time.Time // for soft delete
+/**
+ * ユーザーモデル
+ */
+type User struct {
+	Id        int64     `json:"id,omitempty"`
+	Name      string    `json:"name,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	DeletedAt time.Time `json:"deletedAt,omitempty"`
 }

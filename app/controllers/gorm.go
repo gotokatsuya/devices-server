@@ -3,7 +3,7 @@ package controllers
 import (
 	"bytes"
 	"database/sql"
-	"devices-server/app/models"
+	m "devices-server/app/models"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	r "github.com/revel/revel"
@@ -25,6 +25,7 @@ func driversourcesForMysql(username string, password string, name string) string
 	drivesources.WriteString("@")
 	drivesources.WriteString("/")
 	drivesources.WriteString(name)
+	drivesources.WriteString("?charset=utf8&parseTime=True")
 	return drivesources.String()
 }
 
@@ -47,7 +48,7 @@ func InitDB() {
 	password := ensureOption("db.password")
 	name := ensureOption("db.name")
 
-	// 今はmysql前提で書いている
+	// 今はmysql前提
 	drivesources := driversourcesForMysql(username, password, name)
 
 	// open db
@@ -56,9 +57,15 @@ func InitDB() {
 		r.ERROR.Println("FATAL", err)
 		panic(err)
 	}
-	Gdb.AutoMigrate(&models.User{})
-	// uniquie index if need
-	//Gdb.Model(&models.User{}).AddUniqueIndex("idx_user_name", "name")
+
+	Gdb.SingularTable(true)
+
+	//開発中なので常にdropしている
+	Gdb.DropTableIfExists(&m.User{})
+	Gdb.CreateTable(&m.User{})
+
+	Gdb.DropTableIfExists(&m.Device{})
+	Gdb.CreateTable(&m.Device{})
 }
 
 // transactions

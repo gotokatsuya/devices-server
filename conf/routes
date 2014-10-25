@@ -4,7 +4,14 @@
 
 module:testrunner
 
-GET     /                                       App.Index
+# User
+POST    /api/users/create                           Users.Create
+GET     /api/users/get_list                         Users.GetList                        
+
+# Device
+POST    /api/devices/create                         Devices.Create
+GET	    /api/devices/get_list                       Devices.GetList             
+POST    /api/devices/borrow                         Devices.Borrow
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
