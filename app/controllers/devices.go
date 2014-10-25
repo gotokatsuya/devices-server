@@ -64,7 +64,7 @@ func (c Devices) Create(name string,
 	Deviceのリストを取得
  	return data{sucess, devices}
 */
-func (c Devices) GetList() revel.Result {
+func (c Devices) List() revel.Result {
 	data := struct {
 		Success bool       `json:"success"`
 		Devices []m.Device `json:"devices"`

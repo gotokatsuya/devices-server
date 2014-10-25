@@ -6,7 +6,7 @@ module:testrunner
 
 # User
 POST    /api/users/create                           Users.Create
-GET     /api/users/get_list                         Users.GetList                        
+GET     /api/users/list                             Users.List                        
 
 # Device
 POST    /api/devices/create                         Devices.Create
