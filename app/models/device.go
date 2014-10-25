@@ -1,5 +1,9 @@
 package models
 
+import (
+	"time"
+)
+
 /**
  * 端末モデル
  */
@@ -18,4 +22,15 @@ type Device struct {
 	UpdatedAt     int64  `json:"updatedAt,omitempty"`
 	DeletedAt     int64  `json:"deletedAt,omitempty"`
 	User          User   `json:"user,omitempty"`
+}
+
+func (d *Device) AfterUpdate() (err error) {
+	d.UpdatedAt = time.Now().Unix()
+	return
+}
+
+func (d *Device) AfterCreate() (err error) {
+	d.CreatedAt = time.Now().Unix()
+	d.UpdatedAt = time.Now().Unix()
+	return
 }
