@@ -1,14 +1,12 @@
 package models
 
-import "time"
-
 /**
  * ユーザーモデル
  */
 type User struct {
-	Id        int64     `json:"id,omitempty"`
-	Name      string    `json:"name,omitempty"`
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-	DeletedAt time.Time `json:"deletedAt,omitempty"`
+	Id        int64  `json:"id,omitempty"`
+	Name      string `json:"name,omitempty"`
+	CreatedAt int64  `json:"createdAt,omitempty"`
+	UpdatedAt int64  `json:"updatedAt,omitempty"`
+	DeletedAt int64  `json:"deletedAt,omitempty"`
 }

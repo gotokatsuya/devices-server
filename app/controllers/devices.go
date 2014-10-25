@@ -2,7 +2,6 @@ package controllers
 
 import "github.com/revel/revel"
 import m "devices-server/app/models"
-import "time"
 
 type Devices struct {
 	GormController
@@ -28,7 +27,7 @@ func (c Devices) Create(name string,
 	size string,
 	resolution string,
 	memory string,
-	dateOfRelease time.Time,
+	dateOfRelease int64,
 	other string) revel.Result {
 	data := struct {
 		Success bool     `json:"success"`
