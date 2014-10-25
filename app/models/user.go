@@ -15,13 +15,18 @@ type User struct {
 	DeletedAt int64  `json:"deletedAt,omitempty"`
 }
 
-func (u *User) AfterUpdate() (err error) {
+func (u *User) BeforeCreate() (err error) {
+	u.CreatedAt = time.Now().Unix()
 	u.UpdatedAt = time.Now().Unix()
 	return
 }
 
-func (u *User) AfterCreate() (err error) {
-	u.CreatedAt = time.Now().Unix()
+func (u *User) BeforeUpdate() (err error) {
 	u.UpdatedAt = time.Now().Unix()
+	return
+}
+
+func (u *User) BeforeDelete() (err error) {
+	u.DeletedAt = time.Now().Unix()
 	return
 }

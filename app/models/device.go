@@ -24,13 +24,18 @@ type Device struct {
 	User          User   `json:"user,omitempty"`
 }
 
-func (d *Device) AfterUpdate() (err error) {
+func (d *Device) BeforeCreate() (err error) {
+	d.CreatedAt = time.Now().Unix()
 	d.UpdatedAt = time.Now().Unix()
 	return
 }
 
-func (d *Device) AfterCreate() (err error) {
-	d.CreatedAt = time.Now().Unix()
+func (d *Device) BeforeUpdate() (err error) {
 	d.UpdatedAt = time.Now().Unix()
+	return
+}
+
+func (d *Device) BeforeDelete() (err error) {
+	d.DeletedAt = time.Now().Unix()
 	return
 }
