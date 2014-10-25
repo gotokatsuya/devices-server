@@ -10,7 +10,7 @@ GET     /api/users/get_list                         Users.GetList
 
 # Device
 POST    /api/devices/create                         Devices.Create
-GET	    /api/devices/get_list                       Devices.GetList             
+GET	    /api/devices/list                       	Devices.List             
 POST    /api/devices/borrow                         Devices.Borrow
 
 # Ignore favicon requests

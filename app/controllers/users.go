@@ -37,7 +37,7 @@ func (c Users) Create(username string) revel.Result {
 	Userのリストを取得
  	return data{sucess, users}
 */
-func (c Users) GetList() revel.Result {
+func (c Users) List() revel.Result {
 	data := struct {
 		Success bool     `json:"success"`
 		Users   []m.User `json:"users"`
