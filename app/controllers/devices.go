@@ -1,7 +1,9 @@
 package controllers
 
-import "github.com/revel/revel"
-import m "devices-server/app/models"
+import (
+	m "devices-server/app/models"
+	"github.com/revel/revel"
+)
 
 type Devices struct {
 	GormController
@@ -53,6 +55,58 @@ func (c Devices) Create(name string,
 		}
 		c.Txn.NewRecord(device)
 		c.Txn.Create(&device)
+		data.Device = device
+		data.Success = true
+	}
+	return c.RenderJson(data)
+}
+
+/*
+	Deviceを更新
+ 	@param device_id:ID
+ 	@param name:機種名
+ 	@param manufacturer:メーカー
+ 	@param carrier:キャリア
+ 	@param os:OS
+ 	@param size:サイズ
+ 	@param resolution:解像度
+ 	@param memory:メモリ
+ 	@param dateOfRelease:発売日
+ 	@param other:その他
+ 	return data{sucess, device}
+*/
+func (c Devices) Update(device_id int64,
+	name string,
+	manufacturer string,
+	carrier string,
+	os string,
+	size string,
+	resolution string,
+	memory string,
+	dateOfRelease int64,
+	other string) revel.Result {
+	data := struct {
+		Success bool     `json:"success"`
+		Device  m.Device `json:"device"`
+	}{
+		Success: false,
+		Device:  m.Device{},
+	}
+
+	var devices []m.Device
+	c.Txn.Find(&devices, "id = ?", device_id)
+	if len(devices) != 0 {
+		device := devices[0]
+		device.Name = name
+		device.Manufacturer = manufacturer
+		device.Carrier = carrier
+		device.Os = os
+		device.Size = size
+		device.Resolution = resolution
+		device.Memory = memory
+		device.DateOfRelease = dateOfRelease
+		device.Other = other
+		c.Txn.Save(&device)
 		data.Device = device
 		data.Success = true
 	}

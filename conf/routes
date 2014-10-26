@@ -6,10 +6,12 @@ module:testrunner
 
 # User
 POST    /api/users/create                           Users.Create
+POST    /api/users/update                           Users.Update
 GET     /api/users/list                             Users.List                        
 
 # Device
 POST    /api/devices/create                         Devices.Create
+POST    /api/devices/update                         Devices.Update
 GET	    /api/devices/list                       	Devices.List             
 POST    /api/devices/borrow                         Devices.Borrow
 
