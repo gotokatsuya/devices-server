@@ -201,7 +201,7 @@ func (c Devices) Return(user_id int64, device_id int64) revel.Result {
 	return c.RenderJson(data)
 }
 
-func (c Devices) appendDeviceState(deviceStates []m.DeviceSatet, user m.User, device_id int64) {
+func (c Devices) appendDeviceState(deviceStates []m.DeviceState, user m.User, device_id int64) []m.DeviceState {
 	deviceState := m.DeviceState{
 		Action:   true,
 		DeviceId: device_id,
