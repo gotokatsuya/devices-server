@@ -158,7 +158,8 @@ func (c Devices) Borrow(user_id int64, device_id int64) revel.Result {
 		if len(devices) != 0 {
 			device := devices[0]
 			device.User = users[0]
-			device.DeviceStates = c.appendDeviceState(device.DeviceStates, users[0], device.Id)
+			deviceStates := device.DeviceStates
+			device.DeviceStates = c.appendDeviceState(deviceStates, users[0], device.Id)
 			c.Txn.Save(&device)
 
 			data.Device = device
@@ -169,7 +170,7 @@ func (c Devices) Borrow(user_id int64, device_id int64) revel.Result {
 }
 
 /*
-	Deviceを特定のユーザーに貸し出す
+	ユーザーがDeviceを返却する
 	@param userId:ユーザ-ID
  	@param deviceId:端末ID
  	return data{sucess, device}
@@ -191,7 +192,8 @@ func (c Devices) Return(user_id int64, device_id int64) revel.Result {
 		if len(devices) != 0 {
 			device := devices[0]
 			device.User = users[0]
-			device.DeviceStates = c.appendDeviceState(device.DeviceStates, users[0], device.Id)
+			deviceStates := device.DeviceStates
+			device.DeviceStates = c.appendDeviceState(deviceStates, users[0], device.Id)
 			c.Txn.Save(&device)
 
 			data.Device = device
@@ -216,6 +218,5 @@ func (c Devices) appendDeviceState(deviceStates []m.DeviceState, user m.User, de
 	}
 	c.Txn.NewRecord(deviceState)
 	c.Txn.Create(&deviceState)
-	deviceStates = append(deviceStates, deviceState)
-	return deviceStates
+	return append(deviceStates, deviceState)
 }
