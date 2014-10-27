@@ -64,6 +64,9 @@ func InitDB() {
 	Gdb.DropTableIfExists(&m.User{})
 	Gdb.CreateTable(&m.User{})
 
+	Gdb.DropTableIfExists(&m.DeviceState{})
+	Gdb.CreateTable(&m.DeviceState{})
+
 	Gdb.DropTableIfExists(&m.Device{})
 	Gdb.CreateTable(&m.Device{})
 }
