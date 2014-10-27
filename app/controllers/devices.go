@@ -162,8 +162,6 @@ func (c Devices) Borrow(user_id int64, device_id int64) revel.Result {
 			device.DeviceStates = appendDeviceState(device.DeviceStates, users[0], device.Id)
 			c.Txn.Save(&device)
 
-			c.Txn.Save(&device)
-
 			data.Device = device
 			data.Success = true
 		}
