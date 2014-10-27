@@ -135,6 +135,18 @@ func (c Devices) List() revel.Result {
 	return c.RenderJson(data)
 }
 
+func (c Devices) appendDeviceState(deviceStates []m.DeviceState, user m.User, device_id int64) []m.DeviceState {
+	deviceState := m.DeviceState{
+		Action:   true,
+		DeviceId: device_id,
+		User:     user,
+	}
+	c.Txn.NewRecord(deviceState)
+	c.Txn.Create(&deviceState)
+	deviceStates = append(deviceStates, deviceState)
+	return deviceStates
+}
+
 /*
 	Deviceを特定のユーザーに貸し出す
 	@param userId:ユーザ-ID
@@ -199,16 +211,4 @@ func (c Devices) Return(user_id int64, device_id int64) revel.Result {
 		}
 	}
 	return c.RenderJson(data)
-}
-
-func (c Devices) appendDeviceState(deviceStates []m.DeviceState, user m.User, device_id int64) []m.DeviceState {
-	deviceState := m.DeviceState{
-		Action:   true,
-		DeviceId: device_id,
-		User:     user,
-	}
-	c.Txn.NewRecord(deviceState)
-	c.Txn.Create(&deviceState)
-	deviceStates = append(deviceStates, deviceState)
-	return deviceStates
 }
