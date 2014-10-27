@@ -7,7 +7,7 @@ import (
 /**
  * 貸出、返却
  */
-type DeveiceState struct {
+type DeviceState struct {
 	Id        int64 `json:"id,omitempty"`
 	DeviceId  int64 `json:"device_id,omitempty"`
 	Action    bool  `json:"action,omitempty"`
