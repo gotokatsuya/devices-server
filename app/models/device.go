@@ -22,9 +22,10 @@ type Device struct {
 	CreatedAt     int64         `json:"createdAt,omitempty"`
 	UpdatedAt     int64         `json:"updatedAt,omitempty"`
 	DeletedAt     int64         `json:"deletedAt,omitempty"`
-	User          User          `json:"user,omitempty"`         // One-To-One relationship (has one)
-	UserId        int64         `json:"user_id,omitempty"`      // Foreign key of User
-	DeviceStates  []DeviceState `json:"deviceStates,omitempty"` // One-To-Many relationship (has many)
+	User          User          `json:"user,omitempty"`          // One-To-One relationship (has one)
+	UserId        int64         `json:"user_id,omitempty"`       // Foreign key of User
+	DeviceStates  []DeviceState `json:"device_states,omitempty"` // One-To-Many relationship (has many)
+	State         bool          `json:"state"`
 }
 
 func (d *Device) BeforeCreate() (err error) {

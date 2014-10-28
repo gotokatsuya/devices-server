@@ -166,6 +166,7 @@ func (c Devices) Borrow(user_id int64, device_id int64) revel.Result {
 			user := users[0]
 			device.UserId = user.Id
 			device.User = user
+			device.State = true
 			device.DeviceStates = c.FindAfterCreateDeviceState(user, device, true)
 			c.Txn.Save(&device)
 
@@ -201,6 +202,7 @@ func (c Devices) Return(user_id int64, device_id int64) revel.Result {
 			user := users[0]
 			device.UserId = user.Id
 			device.User = user
+			device.State = false
 			device.DeviceStates = c.FindAfterCreateDeviceState(user, device, false)
 			c.Txn.Save(&device)
 
