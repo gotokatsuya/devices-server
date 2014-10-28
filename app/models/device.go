@@ -45,7 +45,7 @@ func (d *Device) BeforeDelete() (err error) {
 
 func findUser(Txn *gorm.DB, device Device) Device {
 	var user User
-	Txt.Model(&device).Related(&user)
+	Txn.Model(&device).Related(&user)
 	device.User = user
 	return device
 }
