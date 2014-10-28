@@ -56,7 +56,7 @@ func findDeviceStates(Txn *gorm.DB, device Device) Device {
 	for i := 0; i < len(device_states); i++ {
 		device_state := device_states[i]
 		var user User
-		Txt.Model(&device_state).Related(&user)
+		Txn.Model(&device_state).Related(&user)
 		device_state.User = user
 		device_states[i] = device_state
 	}
