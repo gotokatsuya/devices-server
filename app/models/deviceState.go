@@ -10,7 +10,7 @@ import (
 type DeviceState struct {
 	Id        int64 `json:"id,omitempty"`
 	DeviceId  int64 `json:"device_id,omitempty"` // Foreign key for Device (belongs to)
-	Action    bool  `json:"action"`
+	State     bool  `json:"state"`
 	User      User  `json:"user,omitempty"`    // One-To-One relationship (has one)
 	UserId    int64 `json:"user_id,omitempty"` // Foreign key of User
 	CreatedAt int64 `json:"createdAt,omitempty"`

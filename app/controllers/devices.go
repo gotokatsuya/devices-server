@@ -220,9 +220,9 @@ func (c Devices) Return(user_id int64, device_id int64) revel.Result {
  	@param device_id:端末ID
  	return deviceStates
 */
-func (c Devices) FindAfterCreateDeviceState(user m.User, device m.Device, action bool) []m.DeviceState {
+func (c Devices) FindAfterCreateDeviceState(user m.User, device m.Device, state bool) []m.DeviceState {
 	deviceState := m.DeviceState{
-		Action:   action,
+		State:    state,
 		DeviceId: device.Id,
 		UserId:   user.Id,
 	}
