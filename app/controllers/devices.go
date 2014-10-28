@@ -233,7 +233,7 @@ func (c Devices) FindAfterCreateDeviceState(user m.User, device m.Device, action
 	for i := 0; i < len(device_states); i++ {
 		device_state := device_states[i]
 		var user m.User
-		c.Txt.Model(&device_state).Related(&user)
+		c.Txn.Model(&device_state).Related(&user)
 		device_state.User = user
 		device_states[i] = device_state
 	}
