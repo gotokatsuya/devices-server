@@ -44,18 +44,18 @@ func (d *Device) BeforeDelete() (err error) {
 }
 
 func findUser(Txn *gorm.DB, device Device) Device {
-	var user m.User
+	var user User
 	Txt.Model(&device).Related(&user)
 	device.User = user
 	return device
 }
 
 func findDeviceStates(Txn *gorm.DB, device Device) Device {
-	var device_states []m.DeviceState
+	var device_states []DeviceState
 	Txn.Model(&device).Related(&device_states)
 	for i := 0; i < len(device_states); i++ {
 		device_state := device_states[i]
-		var user m.User
+		var user User
 		Txt.Model(&device_state).Related(&user)
 		device_state.User = user
 		device_states[i] = device_state
