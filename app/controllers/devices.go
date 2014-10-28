@@ -157,9 +157,11 @@ func (c Devices) Borrow(user_id int64, device_id int64) revel.Result {
 		c.Txn.Find(&devices, "id = ?", device_id)
 		if len(devices) != 0 {
 			device := devices[0]
-			device.User = users[0]
+			user := users[0]
+			device.UserId = user.Id
+			device.User = user
 			deviceStates := device.DeviceStates
-			device.DeviceStates = c.appendDeviceState(deviceStates, users[0], device.Id)
+			device.DeviceStates = c.appendDeviceState(deviceStates, user, device.Id)
 			c.Txn.Save(&device)
 
 			data.Device = device
@@ -191,9 +193,11 @@ func (c Devices) Return(user_id int64, device_id int64) revel.Result {
 		c.Txn.Find(&devices, "id = ?", device_id)
 		if len(devices) != 0 {
 			device := devices[0]
-			device.User = users[0]
+			user := users[0]
+			device.UserId = user.Id
+			device.User = user
 			deviceStates := device.DeviceStates
-			device.DeviceStates = c.appendDeviceState(deviceStates, users[0], device.Id)
+			device.DeviceStates = c.appendDeviceState(deviceStates, user, device.Id)
 			c.Txn.Save(&device)
 
 			data.Device = device
@@ -214,6 +218,7 @@ func (c Devices) appendDeviceState(deviceStates []m.DeviceState, user m.User, de
 	deviceState := m.DeviceState{
 		Action:   true,
 		DeviceId: device_id,
+		UserId:   user.Id,
 		User:     user,
 	}
 	c.Txn.NewRecord(deviceState)
