@@ -131,8 +131,8 @@ func (c Devices) List() revel.Result {
 	if len(devices) != 0 {
 		for i := 0; i < len(devices); i++ {
 			device := devices[i]
-			device = m.findUser(c.Txn, device)
-			device = m.findDeviceStates(c.Txn, device)
+			device = m.FindUser(c.Txn, device)
+			device = m.FindDeviceStates(c.Txn, device)
 			devices[i] = device
 		}
 		data.Devices = devices
@@ -201,7 +201,7 @@ func (c Devices) Return(user_id int64, device_id int64) revel.Result {
 			user := users[0]
 			device.UserId = user.Id
 			device.User = user
-			device.DeviceStates = c.findAfterCreateDeviceState(user, device, false)
+			device.DeviceStates = c.FindAfterCreateDeviceState(user, device, false)
 			c.Txn.Save(&device)
 
 			data.Device = device
@@ -218,7 +218,7 @@ func (c Devices) Return(user_id int64, device_id int64) revel.Result {
  	@param device_id:端末ID
  	return deviceStates
 */
-func (c Devices) findAfterCreateDeviceState(user m.User, device m.Device, action bool) []m.DeviceState {
+func (c Devices) FindAfterCreateDeviceState(user m.User, device m.Device, action bool) []m.DeviceState {
 	deviceState := m.DeviceState{
 		Action:   action,
 		DeviceId: device.Id,
