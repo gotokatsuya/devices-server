@@ -60,6 +60,6 @@ func findDeviceStates(Txn *gorm.DB, device Device) Device {
 		device_state.User = user
 		device_states[i] = device_state
 	}
-	device.DeviceState = device_states
+	device.DeviceStates = device_states
 	return device
 }
