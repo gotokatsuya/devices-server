@@ -129,6 +129,13 @@ func (c Devices) List() revel.Result {
 	var devices []m.Device
 	c.Txn.Find(&devices)
 	if len(devices) != 0 {
+		int count = len(devices)
+		for i := 0; i < count; i++ {
+			device := devices[i]
+			device = m.findUser(c.Txn, device)
+			device = m.findDeviceStates(c.Txn, device)
+			devices[i] = device
+		}
 		data.Devices = devices
 		data.Success = true
 	}
@@ -218,14 +225,19 @@ func (c Devices) findAfterCreateDeviceState(user m.User, device m.Device, action
 		DeviceId: device.Id,
 		UserId:   user.Id,
 	}
-	var _user m.User
-	c.Txn.Model(&deviceState).Related(&_user)
-	deviceState.User = _user
-
 	c.Txn.NewRecord(deviceState)
 	c.Txn.Create(&deviceState)
 
 	var device_states []m.DeviceState
 	c.Txn.Model(&device).Related(&device_states)
+
+	for i := 0; i < len(device_states); i++ {
+		device_state := device_states[i]
+		var user m.User
+		c.Txt.Model(&device_state).Related(&user)
+		device_state.User = user
+		device_states[i] = device_state
+	}
+
 	return device_states
 }

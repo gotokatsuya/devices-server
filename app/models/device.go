@@ -41,3 +41,24 @@ func (d *Device) BeforeDelete() (err error) {
 	d.DeletedAt = time.Now().Unix()
 	return
 }
+
+func findUser(Txn *gorm.DB, Device device) Device {
+	var user m.User
+	Txt.Model(&device).Related(&user)
+	device.User = user
+	return device
+}
+
+func findDeviceStates(Txn *gorm.DB, Device device) Device {
+	var device_states []m.DeviceState
+	Txn.Model(&device).Related(&device_states)
+	for i := 0; i < len(device_states); i++ {
+		device_state := device_states[i]
+		var user m.User
+		Txt.Model(&device_state).Related(&user)
+		device_state.User = user
+		device_states[i] = device_state
+	}
+	device.DeviceState = device_states
+	return device_states
+}
