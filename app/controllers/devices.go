@@ -129,8 +129,7 @@ func (c Devices) List() revel.Result {
 	var devices []m.Device
 	c.Txn.Find(&devices)
 	if len(devices) != 0 {
-		int count = len(devices)
-		for i := 0; i < count; i++ {
+		for i := 0; i < len(devices); i++ {
 			device := devices[i]
 			device = m.findUser(c.Txn, device)
 			device = m.findDeviceStates(c.Txn, device)
