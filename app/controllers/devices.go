@@ -218,9 +218,9 @@ func (c Devices) findAfterCreateDeviceState(user m.User, device m.Device, action
 		DeviceId: device.Id,
 		UserId:   user.Id,
 	}
-	var user m.User
-	c.Txn.Model(&deviceState).Related(&user)
-	deviceState.User = user
+	var _user m.User
+	c.Txn.Model(&deviceState).Related(&_user)
+	deviceState.User = _user
 
 	c.Txn.NewRecord(deviceState)
 	c.Txn.Create(&deviceState)
