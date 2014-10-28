@@ -160,8 +160,7 @@ func (c Devices) Borrow(user_id int64, device_id int64) revel.Result {
 			user := users[0]
 			device.UserId = user.Id
 			device.User = user
-			deviceStates := device.DeviceStates
-			device.DeviceStates = c.appendDeviceState(deviceStates, user, device.Id)
+			device.DeviceStates = c.findAfterCreateDeviceState(user, device, true)
 			c.Txn.Save(&device)
 
 			data.Device = device
@@ -196,8 +195,7 @@ func (c Devices) Return(user_id int64, device_id int64) revel.Result {
 			user := users[0]
 			device.UserId = user.Id
 			device.User = user
-			deviceStates := device.DeviceStates
-			device.DeviceStates = c.appendDeviceState(deviceStates, user, device.Id)
+			device.DeviceStates = c.findAfterCreateDeviceState(user, device, false)
 			c.Txn.Save(&device)
 
 			data.Device = device
@@ -214,14 +212,16 @@ func (c Devices) Return(user_id int64, device_id int64) revel.Result {
  	@param device_id:端末ID
  	return deviceStates
 */
-func (c Devices) appendDeviceState(deviceStates []m.DeviceState, user m.User, device_id int64) []m.DeviceState {
+func (c Devices) findAfterCreateDeviceState(user m.User, device m.Device, action bool) []m.DeviceState {
 	deviceState := m.DeviceState{
-		Action:   true,
-		DeviceId: device_id,
+		Action:   action,
+		DeviceId: device.Id,
 		UserId:   user.Id,
 		User:     user,
 	}
 	c.Txn.NewRecord(deviceState)
 	c.Txn.Create(&deviceState)
-	return append(deviceStates, deviceState)
+	var device_states []m.DeviceState
+	c.Txn.Model(&device).Related(&device_states)
+	return device_states
 }
